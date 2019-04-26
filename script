@@ -1,0 +1,75 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 25 15:48:41 2019
+
+@author: prestamour
+"""
+import pandas as pd                                                             #permite manejar datos como en excel
+#import numpy as np
+import matplotlib.pyplot as plt
+#import seaborn as sns
+
+SPOT = pd.read_excel("spot.xlsx",sheet_name="Worksheet",skiprows=6)  #sube una hoja de excel 
+FUTURO=pd.read_excel("futuro.xls",sheet_name="Resultado")
+JOINT=pd.read_excel("JUNTOS.xlsx",sheet_name="Hoja1")
+df=pd.read_excel("JUNTOS.xlsx")
+JOINT.head(3)
+df["Diferencia1"] = df["SPOT"]-df["FUTURO"]
+df["Diferencia2"] = df["FUTURO"]-df["SPOT"]
+df
+
+print("Utilizando un contrato futuro sobre TRM se pueden realizar una operación de arbitraje. Para una fecha inicial (A), se subscribe un contrato futuro y en una fecha final (B) se realiza una operación en el mercado de contado, o viceversa intercambiando las operaciones entre la fecha (A) y (B)")
+#-------------------------------------------------------------
+fig = plt.figure(figsize=(40,10))
+
+fig.suptitle('Estrategia', fontsize = 15)
+
+
+ax1 = fig.add_subplot(111)
+ax1.set_title('Dolar Spot.')
+ax1.plot(SPOT['Date'], SPOT['PX_LAST'], color = 'green')
+ax1.grid(True)
+
+
+ax2 = fig.add_subplot(122)
+ax2.set_title('FUTURO Dolar')
+ax2.plot(FUTURO['Fecha'], FUTURO['Precio'], color = 'magenta')
+ax2.grid(True)
+
+plt.show()
+
+
+#--------------------------------------------------------------------
+fig = plt.figure(figsize=(10,10))
+plt.title("PESO-DOLAR", weight="bold", size=15, color = "0.3")
+print("Cambio  primero en el Spot de dólar a pesos y luego cambio con el derivado de pesos a dolar ")
+plt.plot(df['Date'], df['Diferencia1'], color = 'green')
+plt.legend()
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+#plt.show()
+plt.savefig("PESO-DOLAR.png")
+
+
+plt.title("DOLAR-PESO", weight="bold", size=15, color = "0.3")
+fig = plt.figure(figsize=(10,10))
+print("Cambio primero en el Spot de pesos a dólar y luego cambio con el derivado de dolar a pesos")
+plt.plot(df['Date'], df['Diferencia2'], color = 'blue')
+plt.legend()
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+#plt.show()
+plt.savefig("DOLAR-PESO.png")
+
+
+
+
+#--------------------------------------------------------------
+
+fig = plt.figure(figsize=(15,10))
+#plt.xlim('2010-01-15', '2018-10-15')
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+plt.title("SPOT VS FUTURO", weight="bold", size=15, color = "0.3")
+plt.xlabel('Fechas', weight="bold", size=12)
+plt.plot(JOINT['Date'], df['SPOT'], color = 'blue')
+plt.plot(JOINT['Date'], df['FUTURO'], color = 'green')
+#plt.show()
+plt.savefig("Superpuesta.png")#,bbox_inches='tight')
