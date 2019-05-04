@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May  3 16:24:46 2019
+
+@author: hipatia
+"""
+
+import pandas as pd                                                             #permite manejar datos como en excel
+#import numpy as np
+import matplotlib.pyplot as plt
+
+SPOT = pd.read_csv("spot.csv",skiprows=6)
+#SPOT = pd.read_excel("spot.xlsx",sheet_name="Worksheet",skiprows=6)  #sube una hoja de excel 
+FUTURO=pd.read_csv("futuro.csv",skiprows=1)
+JOINT=pd.read_csv("JUNTOS.csv")
+df=pd.read_csv("JUNTOS.csv")
+df["SPOT"]
+df["Diferencia1"] = df["SPOT"]-df["FUTURO"]
+df["Diferencia2"] = df["FUTURO"]-df["SPOT"]
+df
+
+print("Utilizando un contrato futuro sobre TRM se pueden realizar una operación de arbitraje. Para una fecha inicial (A), se subscribe un contrato futuro y en una fecha final (B) se realiza una operación en el mercado de contado, o viceversa intercambiando las operaciones entre la fecha (A) y (B)")
+#-------------------------------------------------------------
+fig = plt.figure(figsize=(40,10))
+
+fig.suptitle('Estrategia', fontsize = 15)
+
+SPOT
+ax1 = fig.add_subplot(111)
+ax1.set_title('Dolar Spot.')
+ax1.plot(SPOT['Date'], SPOT['PX_LAST'], color = 'green')
+ax1.grid(True)
+
+
+ax2 = fig.add_subplot(122)
+ax2.set_title('FUTURO Dolar')
+ax2.plot(FUTURO['Fecha'], FUTURO['Precio'], color = 'magenta')
+ax2.grid(True)
+
+plt.show()
+
+
+#--------------------------------------------------------------------
+fig = plt.figure(figsize=(10,10))
+plt.title("PESO-DOLAR", weight="bold", size=15, color = "0.3")
+print("Cambio  primero en el Spot de dólar a pesos y luego cambio con el derivado de pesos a dolar ")
+plt.plot(df['Date'], df['Diferencia1'], color = 'green')
+plt.legend()
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+#plt.show()
+plt.savefig("PESO-DOLAR.png")
+
+
+plt.title("DOLAR-PESO", weight="bold", size=15, color = "0.3")
+fig = plt.figure(figsize=(10,10))
+print("Cambio primero en el Spot de pesos a dólar y luego cambio con el derivado de dolar a pesos")
+plt.plot(df['Date'], df['Diferencia2'], color = 'blue')
+plt.legend()
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+#plt.show()
+plt.savefig("DOLAR-PESO.png")
+
+
+
+
+#--------------------------------------------------------------
+
+fig = plt.figure(figsize=(15,10))
+#plt.xlim('2010-01-15', '2018-10-15')
+plt.grid(True, linewidth=1, linestyle="dotted", color = "0.7")
+plt.title("SPOT VS FUTURO", weight="bold", size=15, color = "0.3")
+plt.xlabel('Fechas', weight="bold", size=12)
+plt.plot(JOINT['Date'], df['SPOT'], color = 'blue')
+plt.plot(JOINT['Date'], df['FUTURO'], color = 'green')
+#plt.show()
+plt.savefig("Superpuesta.png")#,bbox_inches='tight')
+
+
+from tkinter import *
+
+
+
+    
+def futuro():
+    raiz=Tk()
+    raiz.title("FUTURO")
+    raiz.geometry("5000x5000")
+    #raiz.config(width=1000, height=1000)
+    marco=Frame()
+    #marco.config(bg="white",width="500", height="500")
+    marco.pack()
+    miimagen0=PhotoImage(file="commodities.png")
+    labelimg=Label(marco, image=miimagen0).pack()
+    variableLabel=Label(marco,text="Un contrato futuro es un instrumento derivado cuyo precio depende de un subyacente, \n este puede ser trigo, soya, petróleo, oro, divisas o cualquier cosa en la cual el precio fluctúe.").pack()
+    def siguiente():
+        raiz.destroy()
+        futuro2()
+    Boton=Button(raiz , text="Siguiente", command=siguiente)
+    Boton.pack()
+    raiz.mainloop()
+
+
+
+def anterior():
+    raiz2.destroy
+    futuro 
+
+    
+def futuro2():
+    raiz2=Tk()
+    raiz2.title("FUTURO")
+    raiz2.geometry("5000x5000")
+    #raiz2.config(width=1000, height=1000)
+    marco=Frame()
+    marco.config(bg="white",width="500", height="500")
+    marco.pack()
+    #miimagen0=PhotoImage(file="commodities.png")
+    #labelimg=Label(marco, image=miimagen0).pack()
+    variableLabel=Label(marco,width="100", height="30", text="Un contrato futuro es un instrumento derivado cuyo precio depende de un subyacente, \n este puede ser trigo, soya, petróleo, oro, divisas o cualquier cosa en la cual el precio fluctúe.").pack()    
+    def siguiente():
+        raiz2.destroy()
+        ventana_17()
+    Boton=Button(raiz2 , text="Siguiente", command=siguiente)
+    Boton.pack()
+    def anterior():
+        raiz2.destroy()
+        futuro()    
+    Boton2=Button(raiz2 , text="Atras", command= anterior)
+    Boton2.pack()
+    raiz2.mainloop()    
+    
+    
+    
+        
+    
+
+
+def ventana_17():
+    raiz17=Tk()
+    raiz17.title("Tutorial")
+    raiz17.geometry("5000x5000")
+    #raiz17.config(width="1000", height="1000")
+    marco17=Frame()
+    #marco17.config(width="500", height="500",bg="blue")
+    marco17.pack()
+    def siguiente():
+        raiz17.destroy()
+        ventana_18()
+    Boton=Button(raiz17 , text="Siguiente", command=siguiente)
+    Boton.pack()
+    def anterior():
+        raiz17.destroy()
+        futuro2()    
+    Boton2=Button(raiz17 , text="Atras", command= anterior)
+    Boton2.pack()
+    variableLabel17=Label(marco17, text="Utilizando un contrato futuro sobre TRM es posible realizar una operación de arbitraje.").pack()
+    raiz17.mainloop()
+
+        
+def ventana_18():
+    raiz18=Tk()
+    raiz18.title("Grafica")
+    raiz18.geometry("5000x5000")
+    #raiz18.config(width="1000", height="1000")
+    marco18=Frame()
+    marco18.pack()
+    #marco18.config(bg="white")
+    marco18.config(width="50000", height="50000")
+    def siguiente():
+        raiz18.destroy()
+        #ventana_19()
+    Boton=Button(raiz18 , text="Siguiente", command=siguiente)
+    Boton.pack()
+    def anterior():
+        raiz18.destroy()
+        ventana_17()    
+    Boton2=Button(raiz18 , text="Atras", command= anterior)
+    Boton2.pack()
+    miimagen=PhotoImage(file="Superpuesta.png")
+    variableLabel18=Label(marco18, image=miimagen, width="1080", height="720").pack()
+    raiz18.mainloop()
+    
